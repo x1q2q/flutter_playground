@@ -47,10 +47,14 @@ class _SpotifyPageState extends State<SpotifyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            backgroundColor: Colors.white70,
-            body: RefreshIndicator(
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text("Your Spotify Playlist",
+              style: Theme.of(context).textTheme.titleMedium),
+        ),
+        body: SafeArea(
+            child: RefreshIndicator(
                 backgroundColor: Colors.teal,
                 color: Colors.white,
                 strokeWidth: 2.0,
@@ -68,7 +72,19 @@ class _SpotifyPageState extends State<SpotifyPage> {
                             child:
                                 CircularProgressIndicator(color: Colors.teal))
                         : !hasError
-                            ? _buildPlaylists(context, playlists!)
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                      color: Colors.white,
+                                      child: _buildSimpleGrid(context)),
+                                  const SizedBox(height: 10),
+                                  Expanded(
+                                      child:
+                                          _buildPlaylists(context, playlists!)),
+                                ],
+                              )
                             : Column(
                                 children: <Widget>[
                                   Text("Error: $error"),
@@ -107,10 +123,11 @@ class _SpotifyPageState extends State<SpotifyPage> {
                         child: PhosphorIcon(PhosphorIconsBold.notePencil,
                             color: Colors.teal, size: 24.0)),
                     onPressed: () {}),
-                title: Text(item.name),
+                title: Text(item.name,
+                    style: Theme.of(context).textTheme.labelLarge),
                 trailing: IconButton(
                     icon: Badge.count(
-                        count: 9999,
+                        count: 999,
                         child: Icon(
                           PhosphorIcons.pencilSimple(
                               PhosphorIconsStyle.regular),
@@ -124,10 +141,47 @@ class _SpotifyPageState extends State<SpotifyPage> {
             }));
   }
 
-  Widget buldSimpleGrid(BuildContext context) {
-    return const SimpleGrid(
+  Widget _buildSimpleGrid(BuildContext context) {
+    return SimpleGrid(
       crossAxisCount: 2,
-      children: [SizedBox(height: 100, child: Placeholder())],
+      children: [
+        Container(
+          alignment: AlignmentDirectional.center,
+          height: 100,
+          color: Theme.of(context).colorScheme.secondaryContainer,
+          child: Text(
+            'grid items1',
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(color: Colors.teal),
+          ),
+        ),
+        Container(
+          alignment: AlignmentDirectional.center,
+          height: 100,
+          color: Theme.of(context).colorScheme.secondaryContainer,
+          child: Text(
+            'grid items2',
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(color: Colors.teal),
+          ),
+        ),
+        Container(
+          alignment: AlignmentDirectional.center,
+          height: 100,
+          color: Theme.of(context).colorScheme.secondaryContainer,
+          child: Text(
+            'grid items2',
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(color: Colors.teal),
+          ),
+        ),
+      ],
     );
   }
 }
